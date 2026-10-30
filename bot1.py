@@ -34,11 +34,18 @@ user_data = {}
 
 seen = {}
 
-for uid in os.environ.get("USER_IDS", "").split(","):
-    if uid.strip():
-        seen[int(uid)] = 'из списка'
+
 
 bot = TeleBot(TOKEN)
+
+for uid in os.environ.get("USER_IDS", "").split(","):
+    if uid.strip():
+        uid = int(uid)
+        try:
+            chat = bot.get_chat(uid)
+            seen[uid] = f'{chat.first_name} @{chat.username}'
+        except Exception:
+            seen[uid] = 'из списка'
 
 @bot.message_handler(commands=['users'])
 def users_list(message):

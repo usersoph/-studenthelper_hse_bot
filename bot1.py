@@ -7,8 +7,8 @@ import pandas as pd
 
 TOKEN = os.environ["BOT_TOKEN"]
 
-ADMIN_ID = os.environ["ADMIN_ID"]
-seen = set()
+ADMIN_ID = os.environ["ADMIN_ID"].strip()
+
 
 sheet_mpr = os.environ["SHEET_MPR_ID"]
 sheet_mpr_url = f'https://docs.google.com/spreadsheets/d/{sheet_mpr}/export?format=xlsx'

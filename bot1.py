@@ -30,13 +30,32 @@ pics = {'ess gr': 'images/ess_formula.png',
 
 user_data = {}
 
+seen = {}
+
+
+
 bot = TeleBot(TOKEN)
+
+@bot.message_handler(commands=['users'])
+def users_list(message):
+    if str(message.from_user.id) != ADMIN_ID:
+        return
+    if not seen:
+        bot.send_message(message.chat.id, 'никого нет')
+        return
+    text = f'пользователей: {len(seen)}\n\n'
+    for uid, info in seen.items():
+        text += f'{info} (id {uid})\n'
+    bot.send_message(message.chat.id, text)
+
+
+
 @bot.message_handler(commands=['start'])
 def welcome(message):
     user = message.from_user
     if user.id not in seen:
-        seen.add(user.id)
-        bot.send_message(ADMIN_ID, f'новый пользователь: {user.first_name} @{user.username} (id {user.id})')
+        seen[user.id] = f'{user.first_name} @{user.username}'
+        bot.send_message(ADMIN_ID, f'новый пользователь: {seen[user.id]} (id {user.id})')
     markup = types.InlineKeyboardMarkup()
     btn1 = types.InlineKeyboardButton('ведомости', callback_data = 'vedomosti')
     btn2 = types.InlineKeyboardButton('накоп', callback_data = 'nakop')

@@ -30,6 +30,7 @@ user_data = {}
 bot = TeleBot(TOKEN)
 @bot.message_handler(commands=['start'])
 def welcome(message):
+    print(f'START: {message.from_user.id} @{message.from_user.username} {message.from_user.first_name}')
     markup = types.InlineKeyboardMarkup()
     btn1 = types.InlineKeyboardButton('ведомости', callback_data = 'vedomosti')
     btn2 = types.InlineKeyboardButton('накоп', callback_data = 'nakop')

@@ -34,7 +34,9 @@ user_data = {}
 
 seen = {}
 
-
+for uid in os.environ.get("USER_IDS", "").split(","):
+    if uid.strip():
+        seen[int(uid)] = 'из списка'
 
 bot = TeleBot(TOKEN)
 

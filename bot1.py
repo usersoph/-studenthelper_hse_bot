@@ -33,7 +33,10 @@ user_data = {}
 bot = TeleBot(TOKEN)
 @bot.message_handler(commands=['start'])
 def welcome(message):
-    print(f'START: {message.from_user.id} @{message.from_user.username} {message.from_user.first_name}', flush=True)
+    user = message.from_user
+    if user.id not in seen:
+        seen.add(user.id)
+        bot.send_message(ADMIN_ID, f'новый пользователь: {user.first_name} @{user.username} (id {user.id})')
     markup = types.InlineKeyboardMarkup()
     btn1 = types.InlineKeyboardButton('ведомости', callback_data = 'vedomosti')
     btn2 = types.InlineKeyboardButton('накоп', callback_data = 'nakop')

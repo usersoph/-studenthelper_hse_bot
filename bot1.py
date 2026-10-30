@@ -4,6 +4,8 @@ from sympy import *
 import os
 import pandas as pd
 
+import time
+
 
 TOKEN = os.environ["BOT_TOKEN"]
 
@@ -325,7 +327,20 @@ def ocenka(message, subject):
         bot.send_photo(message.chat.id, photo, caption=otvet + '\nдля возврата в главное меню /start')
 
 
-
+@bot.message_handler(commands=['send'])
+def broadcast(message):
+    if str(message.from_user.id) != ADMIN_ID:
+        return
+    text = message.text.replace('/send', '', 1).strip()
+    ok,fail =0,0
+    for uid in list(seen):
+        try:
+            bot.send_message(uid, text)
+            ok += 1
+        except Exception:
+            fail += 1
+        time.sleep(0.05)
+    bot.send_message(message.chat.id, f'ок ={ok}, not ok{fail}')
 
 
 

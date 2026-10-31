@@ -24,11 +24,15 @@ formulas =  { 'ess gr': (['семакт(тесты на семинарах)', '�
               'zak gr': (['тесты лекция', 'активность', 'коллоквиум', 'экз'],
                          Matrix([S(2) / 10, S(2) / 10, S(3) / 10, S(3) / 10])),
               'inn gr': (['семакт + ср', 'итоговый тест'],
-              Matrix([S(1) / 2, S(1) / 2]))
+              Matrix([S(1) / 2, S(1) / 2])),
+              'fin gr': (['аудиторная работа', 'постановочная дискуссия', 'тестирование'],
+                         Matrix([S(333) / 1000, S(334) / 1000, S(333) / 1000]))
 }
 pics = {'ess gr': 'images/ess_formula.png',
         'zak gr': 'images/zakup_formula.png',
-        'inn gr': 'images/inn_formula.png'}
+        'inn gr': 'images/inn_formula.png',
+        'fin gr': 'images/fin_formula.png',
+        }
 
 user_data = {}
 
@@ -154,16 +158,18 @@ def callback_message(call):
         n2 = types.InlineKeyboardButton('эсс оценка', callback_data = 'ess gr')
         n3 = types.InlineKeyboardButton('упр закуп оценка',callback_data = 'zak gr')
         n4 = types.InlineKeyboardButton('инновац деят оценка',callback_data = 'inn gr')
+        n5 = types.InlineKeyboardButton('упр фин оценка', callback_data='fin gr')
         markup.row(n1)
         markup.row(n2)
         markup.row(n3)
         markup.row(n4)
+        markup.row(n5)
         bot.send_message(call.message.chat.id, 'выбери предмет, в котором будем считать накоп и оценку\nдля возврата в главное меню /start', reply_markup=markup)
     elif call.data == 'mpr gr':
         mes = bot.send_message(call.message.chat.id,
                                'напиши ФИО как в ведомости (например Иванов Иван) - с большой буквы имя фамилия')
         bot.register_next_step_handler(mes,find_student)
-    elif call.data in ['ess gr', 'zak gr', 'inn gr']:
+    elif call.data in ['ess gr', 'zak gr', 'inn gr', 'fin gr']:
         names, A = formulas[call.data]
         user_data[call.message.chat.id] = {'subject': call.data,
                                            'known': [None] * (len(names) - 1)}

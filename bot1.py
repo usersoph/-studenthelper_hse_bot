@@ -88,6 +88,7 @@ def welcome(message):
     markup.row(btn4)
     markup.row(btn5)
     markup.row(btn6)
+    bot.send_message(message.chat.id, 'кнопка меню теперь внизу ', reply_markup=kb)
     bot.reply_to(message, 'привет, '
                           'выбирай тот раздел, который интересует 🗂️\n'
                           '\n'
@@ -363,6 +364,6 @@ def broadcast(message):
 
 @bot.message_handler(func=lambda m: m.text == 'главное меню')
 def menu_button(message):
-    welcome(message)         ё
+    welcome(message)
 
 bot.infinity_polling()

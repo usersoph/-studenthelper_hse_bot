@@ -42,6 +42,10 @@ seen = {}
 
 bot = TeleBot(TOKEN)
 
+bot.set_my_commands([types.BotCommand('start', 'главное меню')])
+kb = types.ReplyKeyboardMarkup(resize_keyboard=True, is_persistent=True)
+kb.add('главное меню')
+
 for uid in os.environ.get("USER_IDS", "").split(","):
     if uid.strip():
         uid = int(uid)
@@ -357,6 +361,8 @@ def broadcast(message):
         time.sleep(0.05)
     bot.send_message(message.chat.id, f'ок ={ok}, not ok{fail}')
 
-
+@bot.message_handler(func=lambda m: m.text == 'главное меню')
+def menu_button(message):
+    welcome(message)         ё
 
 bot.infinity_polling()

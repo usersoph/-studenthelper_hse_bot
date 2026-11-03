@@ -42,7 +42,7 @@ seen = {}
 
 bot = TeleBot(TOKEN)
 
-bot.set_my_commands([types.BotCommand('/start', 'главное меню')])
+bot.set_my_commands([types.BotCommand('start', 'главное меню')])
 kb = types.ReplyKeyboardMarkup(resize_keyboard=True, is_persistent=True)
 kb.add('главное меню')
 
@@ -95,8 +95,10 @@ def welcome(message):
                           '\nпользуясь этим ботом, вы принимаете, что пересылать материалы/контакты из этого бота другим людям(не студентам) - нельзя!\n'
                           '\nкак вы будете распоряжаться этой информацией - дело ваше :з', reply_markup=markup)
 
+
 def is_menu(message):
-    if message.text in ['/start','главное меню']:
+    if message.text in ['/start', 'главное меню']:
+        welcome(message)
         return True
     return False
 
@@ -243,6 +245,8 @@ def save_grade(message, i):
 
 
 def find_student(message):
+    if is_menu(message):
+        return
     fio = message.text.strip().lower()
     sheets = pd.read_excel(sheet_mpr_url, sheet_name=None, header=None)
     for group in ['241','242','243','244','245','246']:

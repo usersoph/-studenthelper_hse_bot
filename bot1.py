@@ -42,7 +42,7 @@ seen = {}
 
 bot = TeleBot(TOKEN)
 
-bot.set_my_commands([types.BotCommand('start', 'главное меню')])
+bot.set_my_commands([types.BotCommand('/start', 'главное меню')])
 kb = types.ReplyKeyboardMarkup(resize_keyboard=True, is_persistent=True)
 kb.add('главное меню')
 

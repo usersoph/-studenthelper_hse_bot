@@ -75,6 +75,7 @@ def welcome(message):
     if user.id not in seen:
         seen[user.id] = f'{user.first_name} @{user.username}'
         bot.send_message(ADMIN_ID, f'новый пользователь: {seen[user.id]} (id {user.id})')
+
     markup = types.InlineKeyboardMarkup()
     btn1 = types.InlineKeyboardButton('ведомости', callback_data = 'vedomosti')
     btn2 = types.InlineKeyboardButton('накоп', callback_data = 'nakop')
@@ -93,6 +94,12 @@ def welcome(message):
                           '\n'
                           '\nпользуясь этим ботом, вы принимаете, что пересылать материалы/контакты из этого бота другим людям(не студентам) - нельзя!\n'
                           '\nкак вы будете распоряжаться этой информацией - дело ваше :з', reply_markup=markup)
+
+def is_menu(message):
+    if message.text in ['/start','главное меню']:
+        return True
+    return False
+
 
 @bot.callback_query_handler(func= lambda callback: True)
 def callback_message(call):
@@ -361,7 +368,7 @@ def broadcast(message):
         time.sleep(0.05)
     bot.send_message(message.chat.id, f'ок ={ok}, not ok{fail}')
 
-@bot.message_handler(func=lambda m: m.text == 'главное меню /start')
+@bot.message_handler(func=lambda m: m.text == 'главное меню')
 def menu_button(message):
     welcome(message)
 

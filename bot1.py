@@ -46,7 +46,7 @@ bot.set_my_commands([types.BotCommand('start', 'главное меню')])
 kb = types.ReplyKeyboardMarkup(resize_keyboard=True, is_persistent=True)
 kb.add('главное меню')
 
-for uid in os.environ.get("USER_IDS", "").split(","):
+for uid in os.environ.get("USER_IDS", " ").split(","):
     if uid.strip():
         uid = int(uid)
         try:

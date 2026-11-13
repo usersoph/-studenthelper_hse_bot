@@ -73,10 +73,6 @@ def users_list(message):
     bot.send_message(message.chat.id, text)
 
 @bot.message_handler(commands=['start'], chat_types=['private'])
-
-
-
-@bot.message_handler(commands=['start'])
 def welcome(message):
     user = message.from_user
     if user.id not in seen:

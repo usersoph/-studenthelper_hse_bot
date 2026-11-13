@@ -10,6 +10,7 @@ import time
 TOKEN = os.environ["BOT_TOKEN"]
 
 ADMIN_ID = os.environ["ADMIN_ID"].strip()
+COURSE_CHAT_ID = os.environ["COURSE_CHAT_ID"]
 
 
 sheet_mpr = os.environ["SHEET_MPR_ID"]
@@ -46,6 +47,10 @@ bot.set_my_commands([types.BotCommand('start', 'главное меню')])
 kb = types.ReplyKeyboardMarkup(resize_keyboard=True, is_persistent=True)
 kb.add('главное меню')
 
+def is_member(user_id):
+    status = bot.get_chat_member(COURSE_CHAT_ID, user_id).status
+    return status in ['member', 'administrator', 'creator', 'restricted']
+
 for uid in os.environ.get("USER_IDS", " ").split(","):
     if uid.strip():
         uid = int(uid)
@@ -67,6 +72,8 @@ def users_list(message):
         text += f'{info} (id {uid})\n'
     bot.send_message(message.chat.id, text)
 
+@bot.message_handler(commands=['start'], chat_types=['private'])
+
 
 
 @bot.message_handler(commands=['start'])
@@ -75,6 +82,8 @@ def welcome(message):
     if user.id not in seen:
         seen[user.id] = f'{user.first_name} @{user.username}'
         bot.send_message(ADMIN_ID, f'новый пользователь: {seen[user.id]} (id {user.id})')
+    if not is_member(message.from_user.id):
+        return bot.send_message(message.chat.id, 'бот только для студентов потока')
 
     markup = types.InlineKeyboardMarkup()
     btn1 = types.InlineKeyboardButton('ведомости', callback_data = 'vedomosti')
@@ -106,6 +115,8 @@ def is_menu(message):
 @bot.callback_query_handler(func= lambda callback: True)
 def callback_message(call):
     bot.answer_callback_query(call.id)
+    if not is_member(call.from_user.id):
+        return bot.send_message(call.message.chat.id, 'бот только для студентов потока ')
     markup = types.InlineKeyboardMarkup()
 
     if call.data == 'vedomosti':

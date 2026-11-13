@@ -19,6 +19,7 @@ sheet_fin = os.environ["SHEET_FIN_ID"]
 mat_mpr = os.environ["MAT_MPR_ID"]
 mat_ess = os.environ["MAT_ESS_ID"]
 mat_koll = os.environ["MAT_KOLL_ID"]
+mat_nis = os.environ["MAT_NIS_ID"]
 
 formulas =  { 'ess gr': (['семакт(тесты на семинарах)', 'дз', 'кр', 'экз'],
                          Matrix([S(24)/100, S(15)/100, S(21)/100, S(4)/10])),
@@ -26,8 +27,8 @@ formulas =  { 'ess gr': (['семакт(тесты на семинарах)', '�
                          Matrix([S(2) / 10, S(2) / 10, S(3) / 10, S(3) / 10])),
               'inn gr': (['семакт + ср', 'итоговый тест'],
               Matrix([S(1) / 2, S(1) / 2])),
-              'fin gr': (['аудиторная работа', 'постановочная дискуссия', 'тестирование'],
-                         Matrix([S(333) / 1000, S(334) / 1000, S(333) / 1000]))
+              'nis gr': (['посещаемость', 'семакт', 'дз', 'проект'],
+                         Matrix([S(1) / 10, S(25) / 100, S(25) / 100, S(4) / 10]))
 }
 pics = {'ess gr': 'images/ess_formula.png',
         'zak gr': 'images/zakup_formula.png',
@@ -148,7 +149,7 @@ def callback_message(call):
     elif call.data == 'materials':
         m1 = types.InlineKeyboardButton('мпр', url=f'https://drive.google.com/drive/folders/{mat_mpr}')
         m2 = types.InlineKeyboardButton('эсс', url=f'https://disk.yandex.ru/d/{mat_ess}')
-        m3 = types.InlineKeyboardButton('коллоквиум', url=f'https://drive.google.com/drive/folders/{mat_koll}')
+        m3 = types.InlineKeyboardButton('нис', url=f'https://disk.360.yandex.ru/d/{mat_nis}')
         markup.row(m1, m2)
         markup.row(m3)
         bot.send_message(call.message.chat.id, 'выбери материалы, которые нужны\n'
@@ -178,7 +179,7 @@ def callback_message(call):
         n2 = types.InlineKeyboardButton('эсс оценка', callback_data = 'ess gr')
         n3 = types.InlineKeyboardButton('упр закуп оценка',callback_data = 'zak gr')
         n4 = types.InlineKeyboardButton('инновац деят оценка',callback_data = 'inn gr')
-        n5 = types.InlineKeyboardButton('упр фин оценка', callback_data='fin gr')
+        n5 = types.InlineKeyboardButton('нис', callback_data='nis gr')
         markup.row(n1)
         markup.row(n2)
         markup.row(n3)
@@ -189,7 +190,7 @@ def callback_message(call):
         mes = bot.send_message(call.message.chat.id,
                                'напиши ФИО как в ведомости (например Иванов Иван) - с большой буквы имя фамилия')
         bot.register_next_step_handler(mes,find_student)
-    elif call.data in ['ess gr', 'zak gr', 'inn gr', 'fin gr']:
+    elif call.data in ['ess gr', 'zak gr', 'inn gr', 'nis gr']:
         names, A = formulas[call.data]
         user_data[call.message.chat.id] = {'subject': call.data,
                                            'known': [None] * (len(names) - 1)}

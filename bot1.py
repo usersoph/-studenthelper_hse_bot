@@ -158,6 +158,7 @@ def callback_message(call):
         with open('images/kursach.png','rb') as photo:
             bot.send_photo(call.message.chat.id, photo,
                            caption = 'сначала договорись с научным руководителем о теме (можно написать нескольким)!!!!\n'
+                                     '\n ссылка на темы и научруков https://docs.google.com/spreadsheets/d/1fqhwKPA5-ZjhaFgFwn1cFUosYxZSUGGmVL6BZxailhQ/edit?usp=sharing '
                                      '\nтема есть : заявка с 02.11.26: https://confluence.hse.ru/x/bGP_Dg\n'
                                      'если темы нет : инициативная тема: https://confluence.hse.ru/x/ySdeDw\n'
                                      '\nдокументы: https://www.hse.ru/ba/gmu/internships\n'
